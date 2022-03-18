@@ -22,10 +22,10 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Test
-      run: dotnet test --logger trx --no-build --verbosity normal --results-directory TestResults
+      run: dotnet test --logger html --no-build --verbosity normal --results-directory TestResults
     - run: ls -la TestResults/*.*
     - name: Publish Test Results
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "TestResults/**/*.trx"
+        files: "TestResults/**/*.html"
