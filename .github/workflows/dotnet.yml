@@ -22,10 +22,12 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Test
-      run: dotnet test --logger html --no-build --verbosity normal --results-directory TestResults
-    - run: ls -la TestResults/*.*
-    - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
+      run: dotnet test --logger "trx;LogFileName=test-results.trx" || true
+    - name: Test Report
+      uses: dorny/test-reporter@v1
       if: always()
       with:
-        files: "TestResults/**/*.html"
+        name: DotNET Tests
+        path: "**/test-results.trx"                            
+        reporter: dotnet-trx
+        fail-on-error: true
